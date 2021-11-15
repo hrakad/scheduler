@@ -17,6 +17,8 @@ import InterviewerList from "./../src/components/InterviewerList";
 
 import Appointment from "./../src/components/Appointment/index.js";
 
+import Header from "./../src/components/Appointment/Header";
+
 //Button stories
 storiesOf("Button", module)
   .addParameters({
@@ -151,3 +153,12 @@ storiesOf("Appointment", module)
   })
   .add("Appointment", () => <Appointment />)
   .add("Appointment with Time", () => <Appointment time="12pm"/>)
+
+  //Header stories
+  storiesOf("Appointment", module)
+    .addParameters({
+      backgrounds: [{ name:"white", value: "#fff", default: true}]
+    })
+    .add("Appointment", () => <Appointment />)
+    .add("Appointment with Time", () => <Appointment time="12pm" />)
+    .add("Header", () => <Header time="12pm" />)
