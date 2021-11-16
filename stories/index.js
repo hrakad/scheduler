@@ -23,6 +23,8 @@ import Empty from "./../src/components/Appointment/Empty";
 
 import Shaw from "./../src/components/Appointment/Shaw";
 
+import Confirm from "./../src/components/Appointment/Confirm";
+
 //Button stories
 storiesOf("Button", module)
   .addParameters({
@@ -153,3 +155,4 @@ storiesOf("Appointment", module)
   .add("Header", () => <Header time="12pm" />)
   .add("Empty", () => <Empty onAdd={action("onAdd")}/>)
   .add("Shaw", () => <Shaw onEdit={action("onEdit")} onDelete={action("onDelete")}/>)
+  .add("Confirm", () => <Confirm onConfirm={action("onConfirm")} onCancle={action("onCancle")}/>)
