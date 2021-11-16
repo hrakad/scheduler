@@ -27,6 +27,8 @@ import Confirm from "./../src/components/Appointment/Confirm";
 
 import Status from "./../src/components/Appointment/Status";
 
+import Error from "./../src/components/Appointment/Error";
+
 //Button stories
 storiesOf("Button", module)
   .addParameters({
@@ -159,3 +161,4 @@ storiesOf("Appointment", module)
   .add("Shaw", () => <Shaw onEdit={action("onEdit")} onDelete={action("onDelete")}/>)
   .add("Confirm", () => <Confirm onConfirm={action("onConfirm")} onCancle={action("onCancle")}/>)
   .add("Status", () => <Status message={"Deleting"}/>)
+  .add("Error", () => <Error message={"Could not delete appointment."} onClose={action("onClose")}/>)
