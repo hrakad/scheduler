@@ -25,6 +25,8 @@ import Shaw from "./../src/components/Appointment/Shaw";
 
 import Confirm from "./../src/components/Appointment/Confirm";
 
+import Status from "./../src/components/Appointment/Status";
+
 //Button stories
 storiesOf("Button", module)
   .addParameters({
@@ -156,3 +158,4 @@ storiesOf("Appointment", module)
   .add("Empty", () => <Empty onAdd={action("onAdd")}/>)
   .add("Shaw", () => <Shaw onEdit={action("onEdit")} onDelete={action("onDelete")}/>)
   .add("Confirm", () => <Confirm onConfirm={action("onConfirm")} onCancle={action("onCancle")}/>)
+  .add("Status", () => <Status message={"Deleting"}/>)
