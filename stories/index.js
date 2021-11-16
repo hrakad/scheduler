@@ -21,6 +21,8 @@ import Header from "./../src/components/Appointment/Header";
 
 import Empty from "./../src/components/Appointment/Empty";
 
+import Shaw from "./../src/components/Appointment/Shaw";
+
 //Button stories
 storiesOf("Button", module)
   .addParameters({
@@ -149,4 +151,5 @@ storiesOf("Appointment", module)
   .add("Appointment", () => <Appointment />)
   .add("Appointment with Time", () => <Appointment time="12pm" />)
   .add("Header", () => <Header time="12pm" />)
-  .add("Empty", () => <Empty onAdd={action("onAdd")}/>);
+  .add("Empty", () => <Empty onAdd={action("onAdd")}/>)
+  .add("Shaw", () => <Shaw onEdit={action("onEdit")} onDelete={action("onDelete")}/>)
