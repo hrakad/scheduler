@@ -24,6 +24,7 @@ export default function Appointment(props) {
       interviewer
     };
     props.bookInterview(props.id, interview);
+    transition(SHOW)
   }
 
   return (
@@ -45,6 +46,7 @@ export default function Appointment(props) {
           onSave={save}
         />
       )}
+
     </article>
   )
 }
