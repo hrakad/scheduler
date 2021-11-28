@@ -3,16 +3,22 @@ import Header from './Header';
 import Show from './Show';
 import Empty from './Empty';
 import Form from './Form';
+import Status from './Status';
+import Confirm from './Confirm';
 
 import useVisualMode from 'hooks/useVisualMode';
 
 import "./styles.scss";
 
+const EMPTY = "EMPTY";
+const SHOW = "SHOW";
+const CREATE = "CREAT";
+const SAVING = "SAVING";
+const DELETING = "DELETING";
+const CONFIRM = "CONFIRM";
+
 export default function Appointment(props) {
 
-  const EMPTY = "EMPTY";
-  const SHOW = "SHOW";
-  const CREATE = "CREAT";
 
   const { mode, transition, back } = useVisualMode(
     props.interview ? SHOW : EMPTY
@@ -23,27 +29,53 @@ export default function Appointment(props) {
       student: name,
       interviewer
     };
-    props.bookInterview(props.id, interview);
-    transition(SHOW)
+    transition(SAVING);
+    props.bookInterview(props.id, interview)
+      .then(() => {
+        transition(SHOW)
+      })
   }
+
+
+  const deleteInterview = () => {
+    transition(DELETING);
+    props.deleteInterview(props.id).then(() => {
+      transition(EMPTY);
+    });
+  };
+
+  const cancel = () => {
+    back();
+  };
 
   return (
     <article className="appointment">
       <Header
         time={props.time}>
       </Header>
+
       {mode === EMPTY && <Empty onAdd={() => transition(CREATE)} />}
       {mode === SHOW && (
         <Show
           student={props.interview.student}
           interviewer={props.interview.interviewer}
+          deleteInterview={() => transition(CONFIRM)}
         />
       )}
       {mode === CREATE && (
         <Form
           interviewers={props.interviewers}
-          onCancel={() => back()}
+          onCancel={() => cancel()}
           onSave={save}
+        />
+      )}
+      {mode === SAVING && <Status message="Saving" />}
+      {mode === DELETING && <Status message="Deleting" />}
+      {mode === CONFIRM && (
+        <Confirm
+          onCancel={cancel}
+          onConfirm={deleteInterview}
+          message="Are you sure you would like to delete?"
         />
       )}
 
