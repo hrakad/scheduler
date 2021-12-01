@@ -48,7 +48,7 @@ export default function Appointment(props) {
   const cancel = () => {
     back();
   };
-
+  //console.log(props.interview)
   return (
     <article className="appointment">
       <Header
@@ -60,6 +60,7 @@ export default function Appointment(props) {
         <Show
           student={props.interview.student}
           interviewer={props.interview.interviewer}
+
           deleteInterview={() => transition(CONFIRM)}
           editInterview={() => transition(EDIT)}
         />
@@ -74,21 +75,23 @@ export default function Appointment(props) {
       {mode === EDIT && (
         <Form
           interviewers={props.interviewers}
-
+          interviewer={props.interview.interviewer.id}
           student={props.interview.student}
           onCancel={() => cancel()}
           onSave={save}
         />
       )}
-      {mode === SAVING && <Status message="Saving" />}
-      {mode === DELETING && <Status message="Deleting" />}
       {mode === CONFIRM && (
         <Confirm
-          onCancel={() => cancel()}
           onConfirm={deleteInterview}
+          onCancel={() => cancel()}
           message="Are you sure you would like to delete?"
         />
       )}
+
+      {mode === SAVING && <Status message="Saving" />}
+      {mode === DELETING && <Status message="Deleting" />}
+
 
     </article>
   )
