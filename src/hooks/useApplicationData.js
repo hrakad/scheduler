@@ -49,10 +49,7 @@ export default function useApplicationData() {
       ...state.appointments,
       [id]: appointment
     };
-    const updateState = setState({
-      ...state,
-      appointments
-    });
+
     return axios.put(`http://localhost:8001/api/appointments/${id}`, { interview })
       .then((res) => {
         const days = newRequest ? updateSpots(id, [...state.days], -1) : [...state.days]
@@ -65,13 +62,7 @@ export default function useApplicationData() {
   }
 
   const deleteInterview = (id) => {
-    const updateState = setState({
-      ...state,
-      appointments: {
-        ...state.appointments,
-        [id]: { ...state.appointments[id], interview: null },
-      },
-    });
+
     return axios
       .delete(`http://localhost:8001/api/appointments/${id}`)
       .then((res) => {
