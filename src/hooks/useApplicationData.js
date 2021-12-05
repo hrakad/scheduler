@@ -30,7 +30,16 @@ export default function useApplicationData() {
   // console.log(state.appointments);
   // console.log(state.interviewers);
 
-  function bookInterview(id, interview) {
+  function updateSpots(id, days, value) {
+    for (const day of days) {
+      if (day.appointments.includes(id)) {
+        day.spots = parseInt(day.spots) + value
+      }
+    }
+    return days;
+  }
+
+  function bookInterview(id, interview, newRequest) {
     //console.log(id, interview);
     const appointment = {
       ...state.appointments[id],
@@ -46,7 +55,12 @@ export default function useApplicationData() {
     });
     return axios.put(`http://localhost:8001/api/appointments/${id}`, { interview })
       .then((res) => {
-        if (res.headers.status === 204) updateState();
+        const days = newRequest ? updateSpots(id, [...state.days], -1) : [...state.days]
+        setState(prev => ({
+          ...prev,
+          appointments,
+          days
+        }))
       })
   }
 
@@ -61,7 +75,22 @@ export default function useApplicationData() {
     return axios
       .delete(`http://localhost:8001/api/appointments/${id}`)
       .then((res) => {
-        if (res.headers.status === 200) updateState();
+        const days = updateSpots(id, [...state.days], 1);
+        setState((prev) => {
+          const newAppointment = {
+            ...prev.appointments[id],
+            interview: null
+          }
+          return {
+            ...prev,
+            appointments:
+            {
+              ...prev.appointments,
+              [id]: newAppointment
+            },
+            days
+          }
+        })
       });
   };
 
