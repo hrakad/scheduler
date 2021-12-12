@@ -9,23 +9,26 @@ afterEach(cleanup);
 
 describe("Application", () => {
   it("defaults to Monday and changes the schedule when a new day is selected", async () => {
+    // 1. Render the Application.
     const { getByText } = render(<Application />);
 
-    await waitForElement(() => getByText("Monday"));
+    // 2. Wait until the appointments for that Day have been rendered
+    // waiting for an async API call to the backend
+    await waitForElement(() => getByText("Monday"))
 
+    // 3. Click on Tuesday in the Day List Sidebar
     fireEvent.click(getByText("Tuesday"));
 
+    // 4. Check that one of the Tuesday appointments shows up in the DOM
     expect(getByText("Leopold Silvers")).toBeInTheDocument();
   });
 
-  it("loads data books an interview and reduces the spots remaining for the first day by 1", async () => {
-    const { container } = render(<Application />);
+  it("loads data, books an interview and reduces the spots remaining for Monday by 1", async () => {
+    const { container, debug } = render(<Application />);
+
     await waitForElement(() => getByText(container, "Archie Cohen"));
-    //console.log(container);
-    //console.log(prettyDOM(container));
 
     const appointments = getAllByTestId(container, "appointment");
-    // console.log(prettyDOM(appointments));
     const appointment = appointments[0];
 
     fireEvent.click(getByAltText(appointment, "Add"));
@@ -35,18 +38,17 @@ describe("Application", () => {
     });
 
     fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
-
     fireEvent.click(getByText(appointment, "Save"));
 
-    // console.log(prettyDOM(appointment));
     expect(getByText(appointment, "Saving")).toBeInTheDocument();
 
     await waitForElement(() => getByText(appointment, "Lydia Miller-Jones"));
 
-    const day = getAllByTestId(container, "day").find((day) =>
+    const day = getAllByTestId(container, "day").find(day =>
       queryByText(day, "Monday")
     );
 
     expect(getByText(day, "no spots remaining")).toBeInTheDocument();
   });
-})
+});
+
