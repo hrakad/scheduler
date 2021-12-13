@@ -29,7 +29,7 @@ export default function Appointment(props) {
     props.interview ? SHOW : EMPTY
   );
 
-  function save(name, interviewer, newRequest) {
+  function save(name, interviewer) {
     // if (!interviewer) {
     //   transition(ERROR_SAVE);
     //   return;
@@ -39,24 +39,24 @@ export default function Appointment(props) {
       interviewer
     };
     transition(SAVING);
-    props.bookInterview(props.id, interview, newRequest)
+    props.bookInterview(props.id, interview)
       .then(() => {
         transition(SHOW)
       })
       .catch(() => {
-        transition(ERROR_SAVE, true)
+        transition(error => transition(ERROR_SAVE));
       })
   }
 
 
-  const deleteInterview = () => {
+  const deleteInterview = (event) => {
     transition(DELETING);
     props.deleteInterview(props.id)
       .then(() => {
         transition(EMPTY);
       })
       .catch(() => {
-        transition(ERROR_DELETE, true)
+        transition(error => transition(ERROR_SAVE, true));
       })
   };
 
@@ -85,7 +85,6 @@ export default function Appointment(props) {
           interviewers={props.interviewers}
           onCancel={() => cancel()}
           onSave={save}
-          newRequest={true}
         />
       )}
       {mode === EDIT && (
@@ -95,7 +94,6 @@ export default function Appointment(props) {
           student={props.interview.student}
           onCancel={() => cancel()}
           onSave={save}
-          newRequest={false}
         />
       )}
       {mode === CONFIRM && (
@@ -109,10 +107,10 @@ export default function Appointment(props) {
       {mode === SAVING && <Status message="Saving" />}
       {mode === DELETING && <Status message="Deleting" />}
       {mode === ERROR_DELETE && (
-        <Error message="Could not cancel Appointment" onCancel={() => back()} />
+        <Error message="Could not cancel Appointment" onCancel={() => cancel()} />
       )}
       {mode === ERROR_SAVE && (
-        <Error message="Could not save Appointment" onCancel={() => back()} />
+        <Error message="Could not save Appointment" onCancel={() => cancel()} />
       )}
 
     </article>
