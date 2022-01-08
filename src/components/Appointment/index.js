@@ -38,25 +38,25 @@ export default function Appointment(props) {
       student: name,
       interviewer
     };
-    transition(SAVING);
+    transition(SAVING, true);
     props.bookInterview(props.id, interview)
       .then(() => {
         transition(SHOW)
       })
       .catch(() => {
-        transition(error => transition(ERROR_SAVE));
+        transition(ERROR_SAVE);
       })
   }
 
 
-  const deleteInterview = (event) => {
-    transition(DELETING);
+  const deleteInterview = () => {
+    transition(DELETING, true);
     props.deleteInterview(props.id)
       .then(() => {
         transition(EMPTY);
       })
       .catch(() => {
-        transition(error => transition(ERROR_SAVE, true));
+        transition(ERROR_DELETE);
       })
   };
 
